@@ -1,0 +1,1 @@
+//asyncronus ialah data yang di tampilkan berproses

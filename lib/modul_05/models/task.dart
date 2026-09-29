@@ -3,6 +3,7 @@ class Task {
   final String title;
   final String course;
   final bool done;
+  final String description = 'Belum ada deskripsi tugas untuk tugas ini.';
   final String createdAt;
   final int prioritas; // 1 = Tinggi, 2 = Sedang, 3 = Rendah
 
@@ -39,12 +40,7 @@ class Task {
     };
   }
 
-  Task copyWith({
-    String? title,
-    String? course,
-    bool? done,
-    int? prioritas,
-  }) {
+  Task copyWith({String? title, String? course, bool? done, int? prioritas}) {
     return Task(
       id: id,
       title: title ?? this.title,
@@ -63,13 +59,31 @@ class Task {
         course: 'Pemrograman Perangkat Bergerak',
         createdAt: '2026-09-15',
       ),
+      Task(
+        id: 'contoh-2',
+        title: 'Membuat presentasi untuk mata kuliah Pemrograman Web',
+        course: 'Pemrograman Web',
+        createdAt: '2026-09-16',
+      ),
+      Task(
+        id: 'contoh-3',
+        title: 'Membaca bab 5 dan 6 buku teks',
+        course: 'Struktur Data',
+        createdAt: '2026-09-17',
+      ),
+      Task(
+        id: 'contoh-4',
+        title: 'Mengerjakan tugas individu Pemrograman Perangkat Bergerak',
+        course: 'Pemrograman Perangkat Bergerak',
+        createdAt: '2026-09-18',
+      ),
       // ... dua contoh lagi
     ];
   }
-  static DateTime? bacaTanggal(Task t)
-{
-  final DateTime? tanggal = DateTime.tryParse(t.createdAt);
-  return tanggal;
-}
-// static String buatId() => 'tugas-${DateTime.now().millisecondsSinceEpoch}';
+
+  static DateTime? bacaTanggal(Task t) {
+    final DateTime? tanggal = DateTime.tryParse(t.createdAt);
+    return tanggal;
+  }
+  // static String buatId() => 'tugas-${DateTime.now().millisecondsSinceEpoch}';
 }

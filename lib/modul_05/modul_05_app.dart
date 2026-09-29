@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'screen/task_list_screen.dart';
 import 'services/task_storage.dart';
 
@@ -11,7 +12,7 @@ class Modul05App extends StatelessWidget {
     // Untuk membuktikkan keadaan memuat
     const bool lambat = bool.fromEnvironment('LAMBAT');
     const TaskStorage storage = TaskStorage(
-      tunda : lambat ? Duration(seconds: 2) : Duration.zero,
+      tunda: lambat ? Duration(seconds: 2) : Duration.zero,
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,

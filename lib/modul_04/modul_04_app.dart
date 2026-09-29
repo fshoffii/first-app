@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'screens/announcement_list_screen.dart';
 import 'services/announcement_api.dart';
 
@@ -18,7 +19,7 @@ class Modul04App extends StatelessWidget {
         useMaterial3: true,
       ),
       home: AnnouncementListScreen(
-      api: AnnouncementApi(modeSimulasi: kModeSimulasi),
+        api: AnnouncementApi(modeSimulasi: kModeSimulasi),
       ),
     );
   }

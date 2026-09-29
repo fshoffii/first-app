@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../course.dart';
 
 class CourseCard extends StatelessWidget {
@@ -29,11 +30,16 @@ class CourseCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(course.name, style: Theme.of(context).textTheme.titleLarge),
+                    Text(
+                      course.name,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                     const SizedBox(height: 8),
                     Text('Dosen: ${course.lecturer} • ${course.sks} SKS'),
                     const Divider(height: 24),
-                    Text('Progress Pembelajaran: ${(course.progress * 100).toInt()}%'),
+                    Text(
+                      'Progress Pembelajaran: ${(course.progress * 100).toInt()}%',
+                    ),
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
@@ -75,14 +81,20 @@ class CourseCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      Icon(Icons.person_outline, size: 16, color: theme.colorScheme.onSurfaceVariant),
+                      Icon(
+                        Icons.person_outline,
+                        size: 16,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           course.lecturer,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ),
                     ],
@@ -90,11 +102,17 @@ class CourseCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.meeting_room_outlined, size: 16, color: theme.colorScheme.onSurfaceVariant),
+                      Icon(
+                        Icons.meeting_room_outlined,
+                        size: 16,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         course.room,
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -105,10 +123,15 @@ class CourseCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Progres Sesi', style: theme.textTheme.labelSmall),
+                          Text(
+                            'Progres Sesi',
+                            style: theme.textTheme.labelSmall,
+                          ),
                           Text(
                             '${(course.progress * 100).toInt()}%',
-                            style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -127,7 +150,10 @@ class CourseCard extends StatelessWidget {
               top: 12,
               right: 12,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(12),

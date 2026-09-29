@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
+
 import '../screens/krs_list_screen.dart';
 import '../screens/add_krs_screen.dart';
-import '../screens/course_detail_screen.dart';
+import '../../modul_05/screen/course_detail_screen.dart';
 
 // Konfigurasi Router Deklaratif GoRouter untuk Modul 03
 final modul03Router = GoRouter(
@@ -11,10 +12,7 @@ final modul03Router = GoRouter(
       path: '/modul-03',
       builder: (context, state) => const KrsListScreen(),
       routes: [
-        GoRoute(
-          path: 'add',
-          builder: (context, state) => const AddKrsScreen(),
-        ),
+        GoRoute(path: 'add', builder: (context, state) => const AddKrsScreen()),
         GoRoute(
           path: 'detail/:code',
           builder: (context, state) {

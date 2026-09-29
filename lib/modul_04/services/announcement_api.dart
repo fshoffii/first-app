@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+
 import '../models/announcement.dart';
 
 class AnnouncementApi {
   AnnouncementApi({http.Client? client, this.modeSimulasi = false})
-      : _client = client ?? http.Client(),
-        _milikSendiri = client == null;
+    : _client = client ?? http.Client(),
+      _milikSendiri = client == null;
 
   final http.Client _client;
   final bool _milikSendiri;
@@ -59,25 +61,21 @@ class AnnouncementApi {
       throw Exception('Respons server bukan JSON yang valid.');
     }
 
-    return List<Announcement>.generate(
-      baris.length,
-      (int i) {
-        final Map<String, dynamic> mentah = baris[i] as Map<String, dynamic>;
+    return List<Announcement>.generate(baris.length, (int i) {
+      final Map<String, dynamic> mentah = baris[i] as Map<String, dynamic>;
 
-        // jsonplaceholder hanya menyediakan `id`, `title`, dan `body`.
-        // Empat field sisanya kita lengkapi agar model tetap utuh.
-        return Announcement.fromJson(<String, dynamic>{
-          'id': mentah['id'],
-          'title': mentah['title'],
-          'content': mentah['body'],
-          'author': 'Bagian Akademik Poliwangi',
-          'category': daftarKategori[i % daftarKategori.length],
-          'date': '2026-09-${(i % 28 + 1).toString().padLeft(2, '0')}',
-          'readCount': (i + 1) * 37,
-        });
-      },
-      growable: false,
-    );
+      // jsonplaceholder hanya menyediakan `id`, `title`, dan `body`.
+      // Empat field sisanya kita lengkapi agar model tetap utuh.
+      return Announcement.fromJson(<String, dynamic>{
+        'id': mentah['id'],
+        'title': mentah['title'],
+        'content': mentah['body'],
+        'author': 'Bagian Akademik Poliwangi',
+        'category': daftarKategori[i % daftarKategori.length],
+        'date': '2026-09-${(i % 28 + 1).toString().padLeft(2, '0')}',
+        'readCount': (i + 1) * 37,
+      });
+    }, growable: false);
   }
 
   void tutup() {

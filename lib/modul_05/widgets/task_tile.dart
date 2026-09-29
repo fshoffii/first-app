@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../models/task.dart';
 
 class TaskTile extends StatelessWidget {
-  const TaskTile({
-    super.key,
-    required this.task,
-    required this.onToggle,
-  });
+  const TaskTile({super.key, required this.task, required this.onToggle});
 
   final Task task;
   final ValueChanged<Task> onToggle;

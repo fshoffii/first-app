@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/task.dart';
 import '../services/task_storage.dart';
 import '../widgets/task_tile.dart';
+import 'add_task.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key, this.storage});
@@ -22,6 +23,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
   List<Task>? _tugas;
   Object? _error;
   bool _sedangMenyimpan = false;
+  String _lastSavedAt = 'Belum pernah disimpan';
+  int _lastWriteCount = 0;
+  int _totalWriteCount = 0;
 
   void _pesan(String teks) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(teks)));
@@ -50,8 +54,21 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
     try {
       final List<Task> hasil = await _storage.muat();
+      final Map<String, dynamic> meta = await _storage.metadata();
       if (!mounted) return;
-      setState(() => _tugas = hasil);
+
+      setState(() {
+        _tugas = hasil;
+        _lastSavedAt =
+            (meta['lastSavedAt'] as String?) ?? 'Belum pernah disimpan';
+        _lastWriteCount = (meta['lastWriteCount'] as int?) ?? 0;
+        _totalWriteCount = (meta['totalWriteCount'] as int?) ?? 0;
+      });
+
+      final String? recoveryMessage = meta['lastRecoveryMessage'] as String?;
+      if (recoveryMessage != null && recoveryMessage.isNotEmpty) {
+        _pesan(recoveryMessage);
+      }
     } catch (e) {
       if (!mounted) return;
       setState(() => _error = e);
@@ -72,8 +89,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
     try {
       await _storage.simpan(daftarBaru);
+      final Map<String, dynamic> meta = await _storage.metadata();
       if (!mounted) return true;
-      setState(() => _sedangMenyimpan = false);
+      setState(() {
+        _sedangMenyimpan = false;
+        _lastSavedAt =
+            (meta['lastSavedAt'] as String?) ?? 'Belum pernah disimpan';
+        _lastWriteCount = (meta['lastWriteCount'] as int?) ?? 0;
+        _totalWriteCount = (meta['totalWriteCount'] as int?) ?? 0;
+      });
       if (pesan != null) {
         _pesan(pesan);
       }
@@ -138,18 +162,58 @@ class _TaskListScreenState extends State<TaskListScreen> {
             ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          await Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => const AddTaskScreen(),
+            ),
+          );
+          await _muat();
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Tambah'),
+      ),
       body: _tugas == null
           ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _muat,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: daftar.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final Task task = daftar[index];
-                  return TaskTile(task: task, onToggle: _ubahStatus);
-                },
-              ),
+          : Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Terakhir dibuka: $_lastSavedAt',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Tugas ditulis terakhir: $_lastWriteCount',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Total penyimpanan berhasil: $_totalWriteCount',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: _muat,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: daftar.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final Task task = daftar[index];
+                        return TaskTile(task: task, onToggle: _ubahStatus);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
     );
   }
